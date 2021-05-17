@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:visibility="visible"
+    tools:context=".MainActivity">
+
+    <org.opencv.android.JavaCameraView
+        android:id="@+id/javaCamView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/buttonHaar"
+        android:layout_width="125dp"
+        android:layout_height="78dp"
+        android:text="HAAR CLASSIFIER"
+        android:translationX="20dp"
+        android:translationY="700dp" />
+
+    <Button
+        android:id="@+id/buttonLBP"
+        android:layout_width="125dp"
+        android:layout_height="78dp"
+        android:text="LBP CLASSIFIER"
+        android:translationX="250dp"
+        android:translationY="700dp" />
+
+
+</RelativeLayout>
