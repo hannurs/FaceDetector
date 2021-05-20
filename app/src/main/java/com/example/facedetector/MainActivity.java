@@ -207,7 +207,8 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
                 case LoaderCallbackInterface.SUCCESS: {
                     appContext = this.mAppContext;
                     detectorOn = false;
-                    mCameraIndex = BACK_CAMERA;
+                    mCameraIndex = FRONT_CAMERA;
+//                    mCameraIndex = BACK_CAMERA;
                     javaCameraView.setCameraIndex(mCameraIndex);
 
                     javaCameraView.enableView();
