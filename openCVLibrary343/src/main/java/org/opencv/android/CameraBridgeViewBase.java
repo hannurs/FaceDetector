@@ -399,7 +399,8 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
             scale = scale2;
         }
 
-        boolean isFrontCamera = mCameraIndex == CAMERA_ID_FRONT;
+        boolean isFrontCamera = mCameraIndex == 1;
+//        boolean isFrontCamera = mCameraIndex == CAMERA_ID_FRONT;
 
         mMatrix.reset();
         if (isFrontCamera) {

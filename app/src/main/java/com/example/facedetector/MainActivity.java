@@ -33,6 +33,9 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     Button buttonLBP;
     boolean detectorOn;
     Context appContext;
+    final int FRONT_CAMERA = 1;
+    final int BACK_CAMERA = 0;
+    int mCameraIndex;
 
 //    File cascFile;
 
@@ -112,9 +115,20 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     Point fixPoint(Point p) {
         double center_x = mRgba.cols() / 2.0;
         double center_y = mRgba.rows() / 2.0;
-        double radians = Math.toRadians(-90);
-        Point fixed = new Point(((p.x - center_x) * Math.cos(radians)) - ((p.y - center_y) * Math.sin(radians)) +  center_y,
-                ((p.x - center_x) * Math.sin(radians)) + ((p.y - center_y) * Math.cos(radians)) + center_x / 2);
+        double radians = 0;
+        Point fixed = new Point(0, 0);
+        if (mCameraIndex == FRONT_CAMERA) {
+            radians = Math.toRadians(90);
+            fixed = new Point(((p.x - center_x) * Math.cos(radians)) - ((p.y - center_y) * Math.sin(radians)) + center_y * 27 / 16,
+//                    fixed = new Point(((p.x - center_x) * Math.cos(radians)) - ((p.y - center_y) * Math.sin(radians)) + center_y * 13 / 8,
+                    ((p.x - center_x) * Math.sin(radians)) + ((p.y - center_y) * Math.cos(radians)) + center_x);
+        }
+        else if (mCameraIndex == BACK_CAMERA) {
+            radians = Math.toRadians(-90);
+            fixed = new Point(((p.x - center_x) * Math.cos(radians)) - ((p.y - center_y) * Math.sin(radians)) + center_y,
+                    ((p.x - center_x) * Math.sin(radians)) + ((p.y - center_y) * Math.cos(radians)) + center_x / 2);
+        }
+
 
         return fixed;
     }
@@ -160,7 +174,15 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     @Override
     public Mat onCameraFrame(CameraBridgeViewBase.CvCameraViewFrame inputFrame) {
         mRgba = inputFrame.rgba();
-        Core.rotate(mRgba, mRotatedRgba, Core.ROTATE_90_CLOCKWISE);
+
+        if (mCameraIndex == FRONT_CAMERA) {
+            Core.rotate(mRgba, mRotatedRgba, Core.ROTATE_90_COUNTERCLOCKWISE);
+        }
+        else if (mCameraIndex == BACK_CAMERA)
+        {
+            Core.rotate(mRgba, mRotatedRgba, Core.ROTATE_90_CLOCKWISE);
+        }
+
         mGray = inputFrame.gray();
 
         if (detectorOn) {
@@ -185,7 +207,9 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
                 case LoaderCallbackInterface.SUCCESS: {
                     appContext = this.mAppContext;
                     detectorOn = false;
-                    javaCameraView.setCameraIndex(0);
+                    mCameraIndex = BACK_CAMERA;
+                    javaCameraView.setCameraIndex(mCameraIndex);
+
                     javaCameraView.enableView();
                 }
                 break;
