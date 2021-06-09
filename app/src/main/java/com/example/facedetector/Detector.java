@@ -5,8 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
+//import org.opencv.face.Face;
+//import org.opencv.face.Facemark;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
+//import com.tenginekit.face.Face;
+import com.tenginekit.face.FaceLandmarkInfo;
+import com.tenginekit.KitCore;
+//import com.tenginekit.face.Face;
+import com.tenginekit.face.FaceDetectInfo;
+import com.tenginekit.face.FaceLandmarkInfo;
+import com.tenginekit.model.TenginekitPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +25,23 @@ abstract public class Detector {
     CascadeClassifier faceDetector = new CascadeClassifier();
     CascadeClassifier eyeDetector = new CascadeClassifier();
     CascadeClassifier smileDetector = new CascadeClassifier();
+//    boolean facemarkModelLoaded = false;
+//    Facemark facemark;
 
     public Detector() {
+//        if (!facemarkModelLoaded) {
+//            try {
+//                this.facemark = Face.createFacemarkKazemi();
+//                facemark.loadModel("D:\\PG\\magisterka\\1\\msi\\szwoch\\implementacja\\FaceDetector\\app\\src\\main\\res\\raw\\lbfmodel.yaml");
+//                facemarkModelLoaded = true;
+//            }
+//            catch (Exception e) {
+//                System.out.println(e);
+//            }
+//        }
+//        else {
+//            System.out.println("Already loaded");
+//        }
     }
 
     public MatOfRect detectFaces(Mat frame) {
@@ -25,6 +49,10 @@ abstract public class Detector {
         faceDetector.detectMultiScale(frame, faceDetections);
 
         return faceDetections;
+    }
+
+    public void processImage(Mat frame) {
+//        Face.FaceDetect faceDetect = Face.detect(frame);
     }
 
     public MatOfRect filterEyes(MatOfRect eyes, MatOfRect faces) {

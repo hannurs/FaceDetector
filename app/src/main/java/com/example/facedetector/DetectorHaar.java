@@ -106,6 +106,7 @@ public class DetectorHaar extends Detector {
     }
 
     public DetectorHaar(Context context) throws IOException {
+        super();
         loadFaceCascade(context);
         loadEyeCascade(context);
         loadSmileCascade(context);

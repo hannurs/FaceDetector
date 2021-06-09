@@ -90,6 +90,8 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
      */
     public void setCameraIndex(int cameraIndex) {
         this.mCameraIndex = cameraIndex;
+        updateMatrix();
+//        mMatrix.preRotate(180);
     }
 
     public interface CvCameraViewListener {
@@ -381,9 +383,11 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
         }
     }
 
-    private final Matrix mMatrix = new Matrix();
+    public final Matrix mMatrix = new Matrix();
 
     private void updateMatrix() {
+        System.out.print("UPDATEMATRIX");
+
         float mw = this.getWidth();
         float mh = this.getHeight();
 
@@ -409,8 +413,10 @@ public abstract class CameraBridgeViewBase extends SurfaceView implements Surfac
         mMatrix.preTranslate(hw, hh);
         if (isFrontCamera){
             mMatrix.preRotate(270);
+            System.out.print("isFrontCamera");
         } else {
             mMatrix.preRotate(90);
+            System.out.print("isNOTFrontCamera");
         }
         mMatrix.preTranslate(-hw, -hh);
         mMatrix.preScale(scale,scale,hw,hh);

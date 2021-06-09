@@ -15,19 +15,38 @@
 
     <Button
         android:id="@+id/buttonHaar"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
         android:layout_width="125dp"
         android:layout_height="78dp"
-        android:text="HAAR CLASSIFIER"
-        android:translationX="20dp"
-        android:translationY="700dp" />
+        android:text="HAAR CLASSIFIER" />
+<!--        android:translationX="20dp"-->
+<!--        android:translationY="700dp" />-->
 
     <Button
         android:id="@+id/buttonLBP"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginRight="20dp"
         android:layout_width="125dp"
         android:layout_height="78dp"
-        android:text="LBP CLASSIFIER"
-        android:translationX="250dp"
-        android:translationY="700dp" />
+        android:text="LBP CLASSIFIER" />
+<!--        android:translationX="250dp"-->
+<!--        android:translationY="700dp" />-->
+
+    <ImageButton
+        android:id="@+id/buttonSwitchCam"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_marginBottom="38dp"
+        android:scaleX="2"
+        android:scaleY="2"
+        app:srcCompat="@drawable/ic_switch_camera" />
 
 
 </RelativeLayout>

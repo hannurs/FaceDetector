@@ -39,6 +39,7 @@ public class DetectorLBP extends Detector {
 
 
     public DetectorLBP(Context context) throws IOException {
+        super();
         loadFaceCascade(context);
     }
 

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
@@ -17,13 +18,18 @@ import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfPoint2f;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+//import org.opencv.face.Face;
 import org.opencv.imgproc.Imgproc;
+//import org.opencv.face.Facemark;
 import org.opencv.objdetect.CascadeClassifier;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity implements CameraBridgeViewBase.CvCameraViewListener2 {
@@ -31,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
     JavaCameraView javaCameraView;
     Button buttonHaar;
     Button buttonLBP;
+    ImageButton buttonSwitchCam;
     boolean detectorOn;
     Context appContext;
     final int FRONT_CAMERA = 1;
@@ -84,6 +91,19 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
             }
         });
 
+        buttonSwitchCam = (ImageButton)findViewById(R.id.buttonSwitchCam);
+        buttonSwitchCam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCameraIndex = (++mCameraIndex) % 2;
+                System.out.println(mCameraIndex);
+                javaCameraView.disableView();
+                javaCameraView.setCameraIndex(mCameraIndex);
+//                javaCameraView.mMatrix.preRotate(180);
+                javaCameraView.enableView();
+            }
+        });
+
         if (!OpenCVLoader.initDebug()) {
             OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_4_0, this, baseCallback);
         }
@@ -120,7 +140,6 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
         if (mCameraIndex == FRONT_CAMERA) {
             radians = Math.toRadians(90);
             fixed = new Point(((p.x - center_x) * Math.cos(radians)) - ((p.y - center_y) * Math.sin(radians)) + center_y * 27 / 16,
-//                    fixed = new Point(((p.x - center_x) * Math.cos(radians)) - ((p.y - center_y) * Math.sin(radians)) + center_y * 13 / 8,
                     ((p.x - center_x) * Math.sin(radians)) + ((p.y - center_y) * Math.cos(radians)) + center_x);
         }
         else if (mCameraIndex == BACK_CAMERA) {
@@ -190,6 +209,16 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
             MatOfRect faceDetections = detector.detectFaces(mRotatedRgba);
             drawFaceRectangles(faceDetections);
 
+//            List<MatOfPoint2f> landmarks = new LinkedList<MatOfPoint2f>();
+////            Facemark facemark = Face.createFacemarkLBF();
+////            facemark.loadModel("D:\\PG\\magisterka\\1\\msi\\szwoch\\implementacja\\FaceDetector\\app\\src\\main\\res\\raw\\lbfmodel.yaml");
+//            boolean success = this.detector.facemark.fit(mRotatedRgba, faceDetections, landmarks);
+//            if (success) {
+//                for (int i = 0; i < landmarks.size(); i++) {
+//                    Face.drawFacemarks(mRgba, landmarks.get(i), new Scalar(255, 205, 0));
+//                }
+//            }
+
             MatOfRect eyeDetections = detector.detectEyes(mRotatedRgba, faceDetections);
             drawEyeRectangles(eyeDetections);
 //
@@ -202,7 +231,7 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
     private BaseLoaderCallback baseCallback = new BaseLoaderCallback(this) {
         @Override
-        public void onManagerConnected(int status) throws IOException {
+        public void onManagerConnected(int status) {
             switch (status) {
                 case LoaderCallbackInterface.SUCCESS: {
                     appContext = this.mAppContext;
@@ -217,7 +246,11 @@ public class MainActivity extends AppCompatActivity implements CameraBridgeViewB
 
                 default:
                 {
-                    super.onManagerConnected(status);
+                    try {
+                        super.onManagerConnected(status);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
                 break;
             }
